@@ -1,0 +1,11 @@
+
+db.infoAutores.updateOne(
+  { nome: "Mario Souto" },
+  { $set: { nome: "Gabs Ferreira" } }
+);
+
+db.artigos.updateMany(
+  { "autor.nome": "Mario Souto" },
+  { $set: { "autor.nome": "Gabs Ferreira" }},
+  { multi: true }
+);

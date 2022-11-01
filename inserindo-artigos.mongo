@@ -1,0 +1,18 @@
+
+db.autores.update(
+  {
+    nome: "Fernanda Erahardt"
+  },
+  {
+    $set: {
+      artigos: [
+        {
+          slug: "sexta-feira-livre-discord-com-css",
+          titulo: "Sexta-feira livre no Discord com CSS",
+          conteudo: "Nesta sexta-feira conheça Antônio Evaldo, instrutor da Alura e especialista em Front-end. Nos últimos dois encontros, falamos sobre carreira e dicas de estudo, mas esse será um pouco diferente! Teremos uma aula ao vivo explicando como fazer o posicionamento no CSS e como diz nosso amigo Marco Bruno, parar de chutar o CSS.",
+          dataCriado: ISODate('2022-10-05')
+        }
+      ]
+    }
+  });
+  

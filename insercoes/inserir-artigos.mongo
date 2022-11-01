@@ -1,4 +1,4 @@
-db.autores.update({nome: "Gabriel Ferreira"}, { $set: {
+db.autores.update({nome: "Mario Souto"}, { $set: {
     artigos: [
         {
             slug: "faculdade-e-diploma-sao-necessarios-para-programar",
