@@ -1,17 +1,9 @@
 
-var appleStore = db.lojas.findOne({
-    nome: "Apple Store"
-})
+const appleStore = db.lojas.findOne({ nome: "Apple Store" });
+const magazineLuiza = db.lojas.findOne({ nome: "Magazine Luiza" });
+const fastShop = db.lojas.findOne({ nome: "Fast Shop" });
 
-var magazineLuiza = db.lojas.findOne({
-    nome: "Magazine Luiza"
-})
-
-var fastShop = db.lojas.findOne({
-    nome: "Fast Shop"
-})
-
-db.produtos.update({
+db.produtos.updateOne({
     modelo: "iPhone 11"
 }, {
     $set: {
@@ -19,7 +11,7 @@ db.produtos.update({
     }
 })
 
-db.produtos.update({
+db.produtos.updateOne({
     modelo: "iPhone 8"
 }, {
     $set: {
@@ -27,7 +19,7 @@ db.produtos.update({
     }
 })
 
-db.produtos.update({
+db.produtos.updateOne({
     modelo: "Galaxy Note 10"
 }, {
     $set: {
@@ -35,21 +27,10 @@ db.produtos.update({
     }
 })
 
-db.produtos.update({
+db.produtos.updateOne({
     modelo: "Redmi Go"
 }, {
     $set: {
         vendido_em: [fastShop._id]
-    }
-})
-
-var iphone11 = db.produtos.findOne({ modelo: "iPhone 11" })
-var iphone8 = db.produtos.findOne({ modelo: "iPhone 8" })
-
-db.lojas.update({
-    nome: "Apple Store"
-}, {
-    $set: {
-        produtos: [iphone11._id, iphone8._id]
     }
 })

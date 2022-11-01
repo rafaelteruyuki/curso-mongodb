@@ -4,7 +4,15 @@ let redmigo = db.produtos.findOne({ modelo: "Redmi Go" });
 let iphone11 = db.produtos.findOne({ modelo: "iPhone 11" });
 let iphone8 = db.produtos.findOne({ modelo: "iPhone 8" });
 
-db.lojas.update({
+db.lojas.updateOne({
+    nome: "Apple Store"
+}, {
+    $set: {
+        produtos: [iphone11._id, iphone8._id]
+    }
+})
+
+db.lojas.updateOne({
     nome: "Fast Shop",
 }, {
     $set: {
@@ -12,7 +20,7 @@ db.lojas.update({
     }
 })
 
-db.lojas.update({
+db.lojas.updateOne({
     nome: "Magazine Luiza",
 }, {
     $set: {

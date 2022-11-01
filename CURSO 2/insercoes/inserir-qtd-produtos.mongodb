@@ -1,4 +1,4 @@
-db.produtos.update({
+db.produtos.updateOne({
     modelo: "Moto G7"
 }, {
     $set: {
@@ -6,7 +6,7 @@ db.produtos.update({
     }
 })
 
-db.produtos.update({
+db.produtos.updateOne({
     modelo: "iPhone 8"
 }, {
     $set: {
@@ -14,7 +14,7 @@ db.produtos.update({
     }
 })
 
-db.produtos.update({
+db.produtos.updateOne({
     modelo: "Galaxy Note 10"
 }, {
     $set: {
@@ -22,10 +22,41 @@ db.produtos.update({
     }
 })
 
-db.produtos.update({
+db.produtos.updateOne({
     modelo: "Redmi Go"
 }, {
     $set: {
         quantidade: 4
     }
-})
+});
+
+db.clientes.updateMany({}, 
+    {
+        $set: {
+            carrinho: {
+                produtos: []
+            }
+        }
+    }
+);
+
+const produto = db.produtos.findOneAndUpdate({ 
+    modelo: 'iPhone 11',
+    quantidade: { $gt: 0 }
+},{
+    $inc: { quantidade: -1 }
+}, {
+    projection: {
+        marca: 1,
+        modelo: 1,
+        preco: 1
+    }
+});
+
+db.clientes.updateOne({
+    nome: 'Giovanni'
+},{
+    $push: {
+        'carrinho.produtos': produto
+    }
+});

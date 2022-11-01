@@ -1,0 +1,116 @@
+db.produtos.insertOne({
+  marca: 'Apple',
+  modelo: 'iPhone 11',
+  descricao: 'O celular mais novo da Apple',
+  sistema: 'iOS 13',
+  memoria: '128GB',
+  chips: 1,
+  preco: NumberDecimal('4999.99')
+});
+
+
+db.clientes.insertMany([
+  {
+    nome: 'Giovanni',
+    endereco: 'Rua Vergueiro, 3185',
+    email: 'giovanni@example.com',
+    senha: 'giovanni123'
+  },
+  {
+    nome: 'Ricardo',
+    endereco: 'Rua do Ouvidor, 50',
+    email: 'ricardo@example.com',
+    senha: 'ricardo123'
+  }
+]);
+
+db.produtos.updateOne(
+  { modelo: 'iPhone 11' },
+  {
+    $set: {
+      quantidade: 7
+    }
+  }
+);
+
+
+db.clientes.aggregate([
+  {
+    $match: { nome: 'Ricardo'}
+  },
+  {
+    $project: {
+      _id: 0,
+      id_cliente: '$_id',
+      endereco: '$endereco',
+      data: ISODate(),
+      produtos: '$carrinho.produtos',
+      valorTotal: { $sum: '$carrinho.produtos.preco'}
+    }
+  },{
+    $merge: 'pedidos'
+  }
+]);
+
+db.clientes.updateOne({
+  nome: 'Ricardo',
+}, {
+  $set: {
+    'carrinho.produtos': []
+  }
+});
+
+db.lojas.insertOne({
+  nome: 'Apple Store',
+  endereco: 'Av. Roque Petroni Jr, 1080'
+});
+
+
+const magazineLuiza = db.lojas.findOne({
+  nome: 'Magazine Luiza'
+});
+
+const fastShop = db.lojas.findOne({
+  nome: 'Fast Shop'
+});
+
+db.produtos.updateOne({
+  modelo: 'Moto G7'
+}, {
+  $set: {
+    vendido_em: [magazineLuiza._id, fastShop._id]
+  }
+});
+
+
+db.lojas.aggregate([
+  { $match: { nome: 'Apple Store' }},
+  { $lookup: {
+    from: 'produtos',
+    localField: 'produtos',
+    foreignField: '_id',
+    as: 'listaProdutos'
+  }}
+]);
+
+db.produtos.aggregate([
+  { $match: { modelo: 'Moto G7' }},
+  { $lookup: {
+    from: 'lojas',
+    localField: 'vendido_em',
+    foreignField: '_id',
+    as: 'listaLojas'
+  }}
+]);
+
+
+db.lojas.updateMany({}, {
+  $unset: { produtos: 1 }
+});
+
+
+const appleStore = db.lojas.findOne({ nome: "Apple Store" });
+
+db.produtos.find({
+  vendido_em: appleStore._id
+})
